@@ -21,3 +21,7 @@ BASE_DOMAIN="..."
 ## Limitations
 By default, accounts can only have up to 50 subdomains. 
 This program stores 250 chars of Base64 into every TXT record, so the maximum amount of data per account is roughly 9kb
+
+## WARNINIG
+You can't mass delete domains on frii.site, so it might be a bit difficult to delete your uploaded data!
+![Data on dashboard](.github\image.png)
