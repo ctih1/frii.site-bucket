@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-cargo-
 
       - name: Build for Linux (static)
-        run: cargo build --release --target x86_64-unknown-linux-musl
+        run: cargo build --release --target x86_64-unknown-linux-gnu
 
       - name: Upload Linux binary as artifact
         uses: actions/upload-artifact@v4
