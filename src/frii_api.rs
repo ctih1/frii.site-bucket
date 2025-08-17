@@ -1,4 +1,4 @@
-use std::time::SystemTime;
+use std::{time::SystemTime};
 
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -33,6 +33,7 @@ pub async fn create_domain(client: reqwest::Client, api_key: &str, domain: &str,
     let status_code = request.unwrap().status().as_u16();
     match &status_code {
         200 => { println!("{} uploaded ({}%) - {:.2} bytes/s", domain, (current_index as f64 / max_index as f64 * 100.0).round() as u64, (size_of_val(value) as f64 / (start.elapsed().unwrap().as_millis() as f64 / 1000.0)).round() as u64) }
+        403 => { println!("Please register your BASE_DOMAIN first! Also make sure that your BASE_DOMAIN does NOT include '.frii.site'."); std::process::exit(1); }
         405 => { println!("You have hit your domain limit! (max 50)"); std::process::exit(1) }
         409 => { println!("File with that name already exists! (domain conflict)"); std::process::exit(1) }
         460 => { println!("Invalid API key!"); std::process::exit(1) }

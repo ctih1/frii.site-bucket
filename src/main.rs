@@ -26,11 +26,22 @@ async fn main() {
     }
 
     match std::env::var("BASE_DOMAIN") {
-        Ok(val) => base_domain = val,
+        Ok(val) => {
+            if val.contains(".frii.site") {
+                println!("Please do not use the .frii.site suffix in your BASE_DOMAIN!");
+                std::process::exit(1);
+            }
+            base_domain = val
+        },
         Err(_) => {
             println!("Please add BASE_DOMAIN into your .env file. It should not contain the frii.site suffix (aka storage.frii.site should be stored as BASE_DOMAIN=\"storage\"");
             return;
         }
+    }
+
+    if base_domain.contains(".") {
+        print!("Do not use a subdomain!");
+        return;
     }
 
 
@@ -40,6 +51,9 @@ async fn main() {
 
     if mode == "download" || mode == "d" { 
         let domains = frii_api::get_domains(reqwest::Client::new(), &std::env::var("FRII_KEY").unwrap()).await;
+
+        println!("Recieved object with length {}", &domains.as_array().iter().len());
+
         if let Value::Object(domains) = domains {
             for (domain, info) in domains {
                 if !domain.contains(&base_domain) || !domain.contains("[dot]") {
